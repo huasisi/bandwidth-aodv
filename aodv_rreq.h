@@ -55,6 +55,10 @@ typedef struct {
 #endif
     u_int8_t res2;
     u_int8_t hcnt;
+/*---------huasisi-------*/
+    float Bandwidth;
+    float Bmin;
+/*---------huasisi-------*/
     u_int32_t rreq_id;
     u_int32_t dest_addr;
     u_int32_t dest_seqno;
@@ -105,4 +109,13 @@ struct blacklist *rreq_blacklist_find(struct in_addr dest_addr);
 
 #endif				/* NS_NO_DECLARATIONS */
 
+/*---------huasisi-------*/
+typedef struct{
+    char dev[32];
+    long recvBytes;
+    long transBytes;
+    long recvPackets;
+    long transPackets;
+}Bwinfo;
+/*---------huasisi-------*/
 #endif				/* AODV_RREQ_H */
