@@ -25,6 +25,7 @@
 #include "ns-2/aodv-uu.h"
 #else
 #include <netinet/in.h>
+<<<<<<< HEAD
 /*---------huasisi-------*/
 #include <net/if.h>
 #include <stdio.h>
@@ -32,6 +33,12 @@
 #include <string.h>
 #include <unistd.h>
 /*---------huasisi-------*/
+=======
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 #include "aodv_rreq.h"
 #include "aodv_rrep.h"
 #include "routing_table.h"
@@ -63,11 +70,16 @@ struct blacklist *rreq_blacklist_find(struct in_addr dest_addr);
 extern int rreq_gratuitous, expanding_ring_search;
 extern int internet_gw_mode;
 #endif
+<<<<<<< HEAD
 int getData(Bwinfo **Bwi,struct ifreq *ifr);
+=======
+
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 RREQ *NS_CLASS rreq_create(u_int8_t flags, struct in_addr dest_addr,
 			   u_int32_t dest_seqno, struct in_addr orig_addr)
 {
     RREQ *rreq;
+<<<<<<< HEAD
     rreq = (RREQ *) aodv_socket_new_msg();
     rreq->type = AODV_RREQ;
     rreq->res1 = 0;
@@ -95,6 +107,14 @@ RREQ *NS_CLASS rreq_create(u_int8_t flags, struct in_addr dest_addr,
     else
         printf("Bmin is smaller than Bandwidth\n");*/
     /*---------huasisi-------*/
+=======
+
+    rreq = (RREQ *) aodv_socket_new_msg();
+    rreq->type = AODV_RREQ;
+    rreq->res1 = 0;
+    rreq->res2 = 0;
+    rreq->hcnt = 0;
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     rreq->rreq_id = htonl(this_host.rreq_id++);
     rreq->dest_addr = dest_addr.s_addr;
     rreq->dest_seqno = htonl(dest_seqno);
@@ -113,10 +133,18 @@ RREQ *NS_CLASS rreq_create(u_int8_t flags, struct in_addr dest_addr,
 	rreq->g = 1;
     if (flags & RREQ_DEST_ONLY)
 	rreq->d = 1;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     DEBUG(LOG_DEBUG, 0, "Assembled RREQ %s", ip_to_str(dest_addr));
 #ifdef DEBUG_OUTPUT
     log_pkt_fields((AODV_msg *) rreq);
 #endif
+<<<<<<< HEAD
+=======
+
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     return rreq;
 }
 
@@ -153,6 +181,7 @@ void NS_CLASS rreq_send(struct in_addr dest_addr, u_int32_t dest_seqno,
 
     /* Broadcast on all interfaces */
     for (i = 0; i < MAX_NR_INTERFACES; i++) {
+<<<<<<< HEAD
 	if (!DEV_NR(i).enabled) //enable in defs.h,DEV_NR(i) == this_host.devs[2]
 	    continue;
 	rreq = rreq_create(flags, dest_addr, dest_seqno, DEV_NR(i).ipaddr);
@@ -160,6 +189,12 @@ void NS_CLASS rreq_send(struct in_addr dest_addr, u_int32_t dest_seqno,
   //  printf("-----------huasisi----len(RREQ_SIZE) = %d\n",(int)RREQ_SIZE);
     aodv_socket_send((AODV_msg *) rreq, dest, RREQ_SIZE, ttl, &DEV_NR(i)); //dest= BROADCAST
   //  printf("-----------huasisi----Bandwidth2 = %d\n",rreq->Bandwidth);
+=======
+	if (!DEV_NR(i).enabled)
+	    continue;
+	rreq = rreq_create(flags, dest_addr, dest_seqno, DEV_NR(i).ipaddr);
+	aodv_socket_send((AODV_msg *) rreq, dest, RREQ_SIZE, ttl, &DEV_NR(i));
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     }
 }
 
@@ -193,14 +228,20 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
 			   struct in_addr ip_dst, int ip_ttl,
 			   unsigned int ifindex)
 {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     AODV_ext *ext;
     RREP *rrep = NULL;
     int rrep_size = RREP_SIZE;
     rt_table_t *rev_rt, *fwd_rt = NULL;
+<<<<<<< HEAD
     /*---------huasisi-------*/
     float rreq_Bandwidth,rreq_Bmin;
     /*---------huasisi-------*/
+=======
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     u_int32_t rreq_orig_seqno, rreq_dest_seqno;
     u_int32_t rreq_id, rreq_new_hcnt, life;
     unsigned int extlen = 0;
@@ -212,6 +253,7 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     rreq_dest_seqno = ntohl(rreq->dest_seqno);
     rreq_orig_seqno = ntohl(rreq->orig_seqno);
     rreq_new_hcnt = rreq->hcnt + 1;
+<<<<<<< HEAD
     /*---------huasisi-------*/
     
     rreq_Bmin = rreq->Bmin;
@@ -237,6 +279,8 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     else
         printf("Bmin is smaller than Bandwidth\n");
     /*---------huasisi-------*/
+=======
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 
 
     /* Ignore RREQ's that originated from this node. Either we do this
@@ -267,6 +311,7 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     if (rreq_record_find(rreq_orig, rreq_id))
 	return;
 
+<<<<<<< HEAD
     /*---------huasisi-------*/
     /*Check if the bandwidth of this node is bigger than the Bmin of RREQ,if it is not,then ignore the RREQ*/
     if(rreq_Bandwidth < rreq->Bmin){
@@ -280,6 +325,8 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     }
     /*---------huasisi-------*/
 
+=======
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
     /* Now buffer this RREQ so that we don't process a similar RREQ we
        get within PATH_DISCOVERY_TIME. */
     rreq_record_insert(rreq_orig, rreq_id);
@@ -287,7 +334,11 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     /* Determine whether there are any RREQ extensions */
     ext = (AODV_ext *) ((char *) rreq + RREQ_SIZE);
 
+<<<<<<< HEAD
     while ((rreqlen - extlen) > RREQ_SIZE) {  //extlen=0 
+=======
+    while ((rreqlen - extlen) > RREQ_SIZE) {
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 	switch (ext->type) {
 	case RREQ_EXT:
 	    DEBUG(LOG_INFO, 0, "RREQ include EXTENSION");
@@ -312,6 +363,7 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
     /* Calculate the extended minimal life time. */
     life = PATH_DISCOVERY_TIME - 2 * rreq_new_hcnt * NODE_TRAVERSAL_TIME;
 
+<<<<<<< HEAD
     if (rev_rt == NULL) {                              //if REVERSE ROUTE is not exist
 	DEBUG(LOG_DEBUG, 0, "Creating REVERSE route entry, RREQ orig: %s",
 	      ip_to_str(rreq_orig));
@@ -319,11 +371,24 @@ void NS_CLASS rreq_process(RREQ * rreq, int rreqlen, struct in_addr ip_src,
 	rev_rt = rt_table_insert(rreq_orig, ip_src, rreq_new_hcnt,   //then insert a new REVERSE ROUTE
 				 rreq_orig_seqno, life, VALID, 0, ifindex);
     } else {                                                  //if REVERSE ROUTE is exist
+=======
+    if (rev_rt == NULL) {
+	DEBUG(LOG_DEBUG, 0, "Creating REVERSE route entry, RREQ orig: %s",
+	      ip_to_str(rreq_orig));
+
+	rev_rt = rt_table_insert(rreq_orig, ip_src, rreq_new_hcnt,
+				 rreq_orig_seqno, life, VALID, 0, ifindex);
+    } else {
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 	if (rev_rt->dest_seqno == 0 ||
 	    (int32_t) rreq_orig_seqno > (int32_t) rev_rt->dest_seqno ||
 	    (rreq_orig_seqno == rev_rt->dest_seqno &&
 	     (rev_rt->state == INVALID || rreq_new_hcnt < rev_rt->hcnt))) {
+<<<<<<< HEAD
 	    rev_rt = rt_table_update(rev_rt, ip_src, rreq_new_hcnt,           //update the REVERSE ROUTE
+=======
+	    rev_rt = rt_table_update(rev_rt, ip_src, rreq_new_hcnt,
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
 				     rreq_orig_seqno, life, VALID,
 				     rev_rt->flags);
 	}
@@ -710,6 +775,7 @@ void NS_CLASS rreq_blacklist_timeout(void *arg)
     list_detach(&bl->l);
     free(bl);
 }
+<<<<<<< HEAD
 
 /*---------huasisi-------*/
 int getData(Bwinfo **Bwi,struct ifreq *ifr)
@@ -781,3 +847,5 @@ int getData(Bwinfo **Bwi,struct ifreq *ifr)
     return 0;
 }
 /*---------huasisi-------*/
+=======
+>>>>>>> 18c28fcbb43383514898638d49617161a1995852
